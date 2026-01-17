@@ -6,6 +6,9 @@
 
 body{
     height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container{
@@ -16,6 +19,7 @@ body{
     margin-left: 100px;
     border: 4px solid #aaaaae ;
     transition: all 200ms ease-in-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.134);
 }
 
 .container:hover{
@@ -50,12 +54,13 @@ h3{
 }
 
 .display-content{
-    height : 50%;
     width: 85%;
     align-content: center;
     font-size: 25px;
     padding-left: 5px;
-    color: rgb(179, 174, 174);
+    color: rgb(223, 219, 219);
+    padding-left: 10px;
+    overflow: auto;
 }
 
 .bx-tag-x{
@@ -153,4 +158,7 @@ h3{
 }
 .btns i:active {
     background-color: #acacb339;
+}
+.display-content::-webkit-scrollbar:vertical {
+  width: 0;
 }
