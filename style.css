@@ -63,8 +63,19 @@ h3{
     padding: 10px;
     margin-left: 15px;
     font-size: larger;
-
+    height: 40px;
+    border-radius: 50px;
+    text-align: center;
+    align-content: center;
+    transition: 200ms ease-in-out;
 }
+.bx-tag-x:hover{
+    background-color: #454549;
+}
+.bx-tag-x:active{
+    background-color: #67676c;
+}
+
 
 .buttons{
     background-color: #1F1F22;
@@ -89,8 +100,57 @@ h3{
     border: none;
     margin: 0;
     padding: 0;
+    transition: 200ms ease-in-out;
 }
 
 .buttons button:hover{
     background-color: #454447;
+}
+
+#equal{
+    grid-column-start: 5;
+    grid-column-end: 6;
+    grid-row-start: 3;
+    grid-row-end: 6;
+    height: 154px;
+    background-color: rgb(18, 139, 237);
+    transition: 200ms ease-in-out;
+}
+#equal:hover{
+    background-color: rgb(42, 152, 242) ;
+}
+
+.num{
+    background-color: #454549 !important;
+    transition: 200ms ease-in-out;
+}
+.num:hover{
+    background-color: #56565a !important;
+}
+
+.num:active{
+    background-color: #6f6f74 !important;
+}
+
+#equal:active{
+    background-color: rgb(76, 167, 240) ;
+}
+.buttons button:active{
+    background-color: #605f63;
+}
+
+#parenthese, #mod{
+    font-weight: 400;
+}
+
+.btns i {
+    color: rgb(107, 109, 110);
+    transition: 200ms ease-in-out;
+    border-radius: 50px;
+}
+.btns i:hover {
+    background-color: #6f6f7439;
+}
+.btns i:active {
+    background-color: #acacb339;
 }
