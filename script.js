@@ -187,15 +187,25 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
     
     else if (event.target.textContent === "="){
         Result = operate(firstOperand, operator, secondOperator)
-        display.textContent = Result
-        firstOperand = String(Result)
-        operator = ""
-        secondOperator = ""
-        afterOperator = false
+        if(Result){
+            display.textContent = Result
+            firstOperand = String(Result)
+            operator = ""
+            secondOperator = ""
+            afterOperator = false
+        }else {
+            display.textContent = ""
+            firstOperand = ""
+            operator = ""
+            secondOperator = ""
+            afterOperator = false
+        }
+        
+        
     }
 
 
-    
+    console.log(firstOperand, operator, secondOperator)
 
 
     
@@ -218,6 +228,8 @@ deleteBtn.addEventListener("click", () => {
     }
         console.log(firstOperand , operator,secondOperator,afterOperator);
 })
+
+
 
 
 
