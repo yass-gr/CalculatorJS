@@ -23,7 +23,7 @@ body{
 }
 
 .container:hover{
-    border: 4px solid red;
+    border: 4px solid rgb(18, 139, 237);
 }
 .indo-redo-buttons{
     background-color: #1F1F22;
@@ -73,6 +73,7 @@ h3{
     text-align: center;
     align-content: center;
     transition: 200ms ease-in-out;
+    cursor: pointer;
 }
 .bx-tag-x:hover{
     background-color: #454549;
@@ -92,7 +93,6 @@ h3{
     gap: 5px;
     align-items: center;
     justify-content: center;
-    pointer-events: none;
 }
 
 .buttons button{
