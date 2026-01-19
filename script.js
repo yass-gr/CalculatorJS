@@ -4,6 +4,7 @@ let operator = ""
 let secondOperator = ""
 let afterOperator = false
 let Result = ""
+let record
 
 const specialbtns = ["C", "√x", "±", "π", "=","%","."]
 const operators = {
@@ -43,7 +44,7 @@ function power(a, b){
 }
 
 function clear(){
-    display.textContent = "";
+    display.textContent = "0";
     firstOperand = ""
     operator = ""
     secondOperator = ""
@@ -59,7 +60,8 @@ function checkError(){
 
 
 function operate(firstOperand, operator, secondOperator){
-    if (operator === "+"){
+    
+     if (operator === "+"){
         return add(firstOperand, secondOperator)
     }else if (operator === "×"){
         return mult(firstOperand, secondOperator)
@@ -81,12 +83,15 @@ function operate(firstOperand, operator, secondOperator){
 
 // getting elements from the html document
 let display = document.querySelector(".display-content");
-display.textContent = "";
+display.textContent = "0";
 
 const buttons = document.querySelectorAll(".buttons");
 
 //changing display when clicking buttons
 buttons.forEach(btn => btn.addEventListener("click", (event) => {
+    if (display.textContent === "0"){
+        display.textContent = ""
+    }
     if (event.target.tagName === "DIV"){
         
     }
@@ -96,11 +101,13 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
         display.textContent = event.target.textContent
         return
     }
+   
     else if(!specialbtns.includes(event.target.textContent)){
         display.textContent += event.target.textContent in operators ? operators[event.target.textContent] : event.target.textContent
 
         if (!afterOperator){
             if (!(event.target.textContent in operators)){
+               
                 firstOperand += event.target.textContent
                  
              }
@@ -216,11 +223,18 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
                 operator = ""
                 afterOperator = false
             }else{
+                record = firstOperand + operators[operator] +  secondOperator + "=" + Result
+                const history = document.querySelector(".previous-calcs")
+                let recordDisplay = document.createElement("p")
+                recordDisplay.textContent = record
+                history.appendChild(recordDisplay)
+
                 display.textContent = Result
                 firstOperand = String(Result)
                 operator = ""
                 secondOperator = ""
                 afterOperator = false
+                
             }
             
 
@@ -232,7 +246,7 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
     
      
     
-    console.log(firstOperand, operator, secondOperator , afterOperator)
+   
 
 
     
@@ -245,7 +259,7 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
 const deleteBtn = document.querySelector("#delete-btn") 
 deleteBtn.addEventListener("click", () => {
     if (display.textContent = "ERROR"){
-        display.textContent = ""
+        display.textContent = "0"
     }else{
         display.textContent = display.textContent.slice(0, -1)
     if (secondOperator.length > 0){
@@ -259,6 +273,7 @@ deleteBtn.addEventListener("click", () => {
     }
         
 })
+
 
 
 
