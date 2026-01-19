@@ -4,6 +4,7 @@ let operator = ""
 let secondOperator = ""
 let afterOperator = false
 let Result = ""
+
 const specialbtns = ["C", "√x", "±", "π", "=","%","."]
 const operators = {
     "" : "",
@@ -14,7 +15,7 @@ const operators = {
     "mod" : "mod",
     "Xⁿ" : "^" }
 
-
+const errors = ["null", "undefined", "NaN", "Infinity", "-Infinity"]
 
 
 // calculation functions
@@ -48,6 +49,11 @@ function clear(){
     secondOperator = ""
     afterOperator = false
 }
+
+function checkError(){
+   return errors.includes(firstOperand) ||  errors.includes(operator)  || errors.includes(secondOperator)  || errors.includes(Result)    
+}
+
 
 
 
@@ -84,6 +90,12 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
     if (event.target.tagName === "DIV"){
         
     }
+    else if (display.textContent === "ERROR"){
+        clear()
+        firstOperand = event.target.textContent
+        display.textContent = event.target.textContent
+        return
+    }
     else if(!specialbtns.includes(event.target.textContent)){
         display.textContent += event.target.textContent in operators ? operators[event.target.textContent] : event.target.textContent
 
@@ -94,15 +106,24 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
              }
         }
         if (secondOperator && (event.target.textContent in operators)){
-            Result = operate(firstOperand, operator, secondOperator)
-            firstOperand = String(Result)
-            operator = event.target.textContent 
-            secondOperator = ""
-            afterOperator = true
-            display.textContent = String(Result) + operators[operator]
+            Result = String(operate(firstOperand, operator, secondOperator))
+            
+            if (checkError()){
+                display.textContent = "ERROR"
+                firstOperand = ""
+                secondOperator = ""
+                operator = ""
+                afterOperator = false
+            }else{
+                firstOperand = String(Result)
+                operator = event.target.textContent 
+                secondOperator = ""
+                afterOperator = true
+                display.textContent = String(Result) + operators[operator]
+            }
 
         }
-        if ((event.target.textContent in operators)){
+        if ((event.target.textContent in operators && display.textContent !== "ERROR")){
             operator = event.target.textContent
             display.textContent = firstOperand + operators[event.target.textContent]
             afterOperator = true
@@ -116,6 +137,7 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
 
     else if(event.target.textContent === "C"){
         clear()
+    
     }
     else if(event.target.textContent === "π"){
              if (afterOperator){
@@ -144,11 +166,11 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
     else if(event.target.textContent === "%"){
        
             if (afterOperator){
-                secondOperator /= 100
+                secondOperator = String(secondOperator / 100)
                 display.textContent = firstOperand + operators[operator] + secondOperator
             }
             else if (!afterOperator){
-                firstOperand /= 100
+                firstOperand = String(firstOperand / 100)
                 display.textContent = firstOperand + operators[operator] + secondOperator 
             }
 
@@ -157,11 +179,11 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
      else if(event.target.textContent === "√x"){
        
             if (afterOperator){
-                secondOperator = Math.sqrt(secondOperator)
+                secondOperator = String(Math.sqrt(secondOperator))
                 display.textContent = firstOperand + operators[operator] + secondOperator
             }
             else if (!afterOperator){
-                firstOperand = Math.sqrt(firstOperand)
+                firstOperand = String(Math.sqrt(firstOperand))
                 display.textContent = firstOperand + operators[operator] + secondOperator 
             }
 
@@ -184,28 +206,33 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
     }
     
    
-    
-    else if (event.target.textContent === "="){
-        Result = operate(firstOperand, operator, secondOperator)
-        if(Result){
-            display.textContent = Result
-            firstOperand = String(Result)
-            operator = ""
-            secondOperator = ""
-            afterOperator = false
-        }else {
-            display.textContent = ""
-            firstOperand = ""
-            operator = ""
-            secondOperator = ""
-            afterOperator = false
-        }
+   
+     if (event.target.textContent === "="){
+        Result = String(operate(firstOperand, operator, secondOperator))
+            if (checkError()){
+                display.textContent = "ERROR"
+                firstOperand = ""
+                secondOperator = ""
+                operator = ""
+                afterOperator = false
+            }else{
+                display.textContent = Result
+                firstOperand = String(Result)
+                operator = ""
+                secondOperator = ""
+                afterOperator = false
+            }
+            
+
+            
+        
         
         
     }
-
-
-    console.log(firstOperand, operator, secondOperator)
+    
+     
+    
+    console.log(firstOperand, operator, secondOperator , afterOperator)
 
 
     
@@ -217,7 +244,10 @@ buttons.forEach(btn => btn.addEventListener("click", (event) => {
 //delete button
 const deleteBtn = document.querySelector("#delete-btn") 
 deleteBtn.addEventListener("click", () => {
-    display.textContent = display.textContent.slice(0, -1)
+    if (display.textContent = "ERROR"){
+        display.textContent = ""
+    }else{
+        display.textContent = display.textContent.slice(0, -1)
     if (secondOperator.length > 0){
         secondOperator = secondOperator.slice(0, -1)
     }else if (operator !== "") {
@@ -226,7 +256,8 @@ deleteBtn.addEventListener("click", () => {
     }else if (firstOperand.length > 0){
         firstOperand = firstOperand.slice(0, -1)
     }
-        console.log(firstOperand , operator,secondOperator,afterOperator);
+    }
+        
 })
 
 

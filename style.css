@@ -92,6 +92,7 @@ h3{
     gap: 5px;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
 }
 
 .buttons button{
@@ -106,6 +107,7 @@ h3{
     margin: 0;
     padding: 0;
     transition: 200ms ease-in-out;
+    cursor: pointer;
 }
 
 .buttons button:hover{
