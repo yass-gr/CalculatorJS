@@ -20,10 +20,8 @@ body{
 
 .container{
     background-color: #404043;
-    margin-top: 14px;
     height: 688px;
     width: 392px;
-    margin-left: 100px;
     border: 4px solid #aaaaae ;
     transition: all 200ms ease-in-out;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.134);
@@ -230,3 +228,21 @@ h3{
     height: 50%;
 }
 
+
+
+
+@media (max-width : 450px){
+   .container{
+    transform: scale(0.9);
+   }
+}
+@media (min-width : 768px){
+   .container{
+    transform: scale(1.4);
+   }
+}
+@media (min-width : 1024PX){
+   .container{
+    transform: scale(1.1);
+   }
+}
