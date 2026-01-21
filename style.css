@@ -231,14 +231,10 @@ h3{
 
 
 
-@media (max-width : 450px){
+
+@media (max-width : 1024PX){
    .container{
-    transform: scale(0.9);
-   }
-}
-@media (min-width : 768px){
-   .container{
-    transform: scale(1.4);
+    transform: scale(1.5);
    }
 }
 @media (min-width : 1024PX){
