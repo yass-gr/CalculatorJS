@@ -234,7 +234,7 @@ h3{
 
 @media (max-width : 1024PX){
    .container{
-    transform: scale(1.5);
+    transform: scale(1.9);
    }
 }
 @media (min-width : 1024PX){
