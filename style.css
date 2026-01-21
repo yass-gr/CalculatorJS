@@ -51,6 +51,8 @@ h3{
     height: 80px;
     display: flex;
     padding-top: 10px;
+    width: 100%;
+    overflow: visible;
 }
 
 .display-content{
@@ -59,7 +61,12 @@ h3{
     font-size: 25px;
     padding-left: 15px;
     color: rgb(223, 219, 219);
-    overflow: auto;
+    overflow-x: auto;      
+    overflow-y: auto;
+    background-color: #303033;
+    outline: none;
+    border: none;
+    user-select:  none;
 }
 
 .bx-tag-x{
@@ -73,6 +80,7 @@ h3{
     align-content: center;
     transition: 200ms ease-in-out;
     cursor: pointer;
+    
 }
 .bx-tag-x:hover{
     background-color: #454549;
@@ -92,6 +100,7 @@ h3{
     gap: 5px;
     align-items: center;
     justify-content: center;
+    user-select: none;
 }
 
 .buttons button{
@@ -107,6 +116,7 @@ h3{
     padding: 0;
     transition: 200ms ease-in-out;
     cursor: pointer;
+    user-select: none;
 }
 
 .buttons button:hover{
@@ -150,9 +160,10 @@ h3{
 }
 
 .btns i {
-    color: rgb(107, 109, 110);
     transition: 200ms ease-in-out;
     border-radius: 50px;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 .btns i:hover {
     background-color: #6f6f7439;
@@ -160,22 +171,55 @@ h3{
 .btns i:active {
     background-color: #acacb339;
 }
-.display-content::-webkit-scrollbar:vertical {
-  width: 0;
-}
+
 
 .previous-calcs p{
     color: white;
     font-size: larger;
     padding: 10px;
-    border-top: 1px solid gray;
-    border-bottom: 1px solid gray;
     opacity: 0.5;
+    width: 100%;
 }
 
 .previous-calcs{
-    overflow: auto;
+    overflow-y: auto;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    flex-direction: column-reverse;
+    width: 100%;
 }
+
+.active{
+    color: white !important; 
+    pointer-events: all !important;
+    cursor: pointer !important;
+}
+.btns{
+    user-select: none;
+}
+.indo-redo-buttons{
+    user-select: none;
+}
+.previous-calcs::-webkit-scrollbar {
+    width: 6px;
+}
+.previous-calcs::-webkit-scrollbar-track {
+    background: transparent;
+}
+.previous-calcs::-webkit-scrollbar-thumb {
+    background-color: #6f6f74;
+    border-radius: 10px;
+    height: 50%;
+}
+
+.display-content::-webkit-scrollbar {
+    width: 6px;
+}
+.display-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.display-content::-webkit-scrollbar-thumb {
+    background-color: #6f6f74;
+    border-radius: 10px;
+    height: 50%;
+}
+
