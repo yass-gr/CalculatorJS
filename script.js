@@ -1,39 +1,25 @@
 
 
 
-
+//getting elements from the HTML documents
 const display = document.querySelector(".display-content")
-
 const numbersButtons = document.querySelectorAll("[data-number]")
-
 const operatorsButtons = document.querySelectorAll("[data-operator]")
-
 const spacialOperatorsButtons = document.querySelectorAll("[data-operator-special]")
-
 const clearButton = document.querySelector("[data-clear]")
-
 const equalButton = document.querySelector("[data-equal]")
-
 const PInumberButton = document.querySelector("[data-number-pi]")
-
 const deleteButton = document.querySelector("#delete-btn")
-
 const previousCalcs = document.querySelector(".previous-calcs")
-
 const indoButton = document.querySelector("#indo")
 const redoButton = document.querySelector("#redo")
+//.............................
 
 
-
-function createNewRecord(text){
-    let recordElement = document.createElement("p")
-    recordElement.textContent =  text
-    previousCalcs.appendChild(recordElement)
-}
-
-
-
+//the "Calculator" class that contains most of the calculator's logic,state,checks errors,updates display: ("calculator" object is created from this class)
 class Calculator{
+
+    //constructor takes a DOM element representing a display element (to update the display directly)
     constructor(display){
         this.display = display
 
@@ -64,7 +50,9 @@ class Calculator{
         this.result = ""
         this.record = []
     }
+    
 
+    
     appendNumber(input){
      
         if (input === "." && this.firstOperand.includes(".") && !this.switchOperand) return
@@ -87,14 +75,6 @@ class Calculator{
           this.secondOperand += input
         } 
     }
-    updateDisplay(result = undefined){
-        if (result) {
-            this.display.textContent = result
-            return
-        }
-        this.display.textContent = this.firstOperand + this.operator + this.secondOperand
-    }
-
     newOperator(operatorEntred){
     if (this.afterCalc){
         this.operator = operatorEntred
@@ -118,16 +98,6 @@ class Calculator{
      
     }
 
-    clear() {
-        this.firstOperand = ""
-        this.secondOperand = ""
-        this.operator = ""
-        this.switchOperand = false
-        this.afterCalc = false
-        this.result = ""
-
-    }
-
     operate() {
         if (!this.operator || !this.secondOperand){
             return this.firstOperand
@@ -149,6 +119,32 @@ class Calculator{
         }
         
     }
+    
+    calculatorResult(){
+        //adding a snapshot to "this.records"
+        this.result = String(parseFloat(calculator.operate()))
+        if (!this.errors.includes(this.result)){
+            this.record.push([this.firstOperand , this.operator , this.secondOperand , this.result])
+            this.updateRecord()
+        }
+        //new state after "="
+        this.firstOperand = this.result
+        this.operator = ""
+        this.secondOperand = ""
+        this.switchOperand = false
+        this.afterCalc = true
+    }
+    
+
+    clear() {
+        this.firstOperand = ""
+        this.secondOperand = ""
+        this.operator = ""
+        this.switchOperand = false
+        this.afterCalc = false
+        this.result = ""
+
+    }
 
     removeDigit(){
         if(!this.secondOperand && !this.operator){
@@ -160,52 +156,52 @@ class Calculator{
             this.secondOperand = this.secondOperand.slice(0, -1)
         }
     }
-
+    /*checks if any of the calculator's state variables have any of the errors stored in "this.errors" array 
+    (it works because every state variable is always a string so if a 
+    calc returns an error (ex: undefined) its always transformed into 
+    a string before storing it in any state variable)*/
     checkErrors(){
         if(this.errors.includes(this.firstOperand) || this.errors.includes(this.operator)  || this.errors.includes(this.secondOperand) || this.errors.includes(this.result)) {
             this.display.textContent = "ERROR" 
             this.clear()
         } 
     }
+    // .......................
 
-    calculatorResult(){
-        this.result = String(parseFloat(calculator.operate()))
-        if (!this.errors.includes(this.result)){
-            this.record.push([this.firstOperand , this.operator , this.secondOperand , this.result])
-            this.updateRecord()
+
+    updateDisplay(result = undefined){
+        if (result) {
+            this.display.textContent = result
+            return
         }
-        
-        this.firstOperand = this.result
-        this.operator = ""
-        this.secondOperand = ""
-        this.switchOperand = false
-        this.afterCalc = true
+        this.display.textContent = this.firstOperand + this.operator + this.secondOperand
     }
 
+    //updating the records UI
     updateRecord(){
         createNewRecord(`${this.record.at(-1)[0]} ${this.record.at(-1)[1]} ${this.record.at(-1)[2]} = ${this.record.at(-1)[3]}`)
     }
 
    
 }
-
-
-
-
+// creating the calculators object
 const calculator = new Calculator(display)
+//....................................
 
+
+// undo / redo state variables (placed here so the equalButton's event listener can access them)
 let undoIndex = calculator.record.length
 let alreadyIndo = false
+//.....................
 
 
 
+//event listeners for every button:
 
-
-//number buttons
+//number buttons 
 numbersButtons.forEach(button => button.addEventListener("click", (event) => {
     calculator.appendNumber(event.target.textContent)
     calculator.updateDisplay()
-    console.log(calculator.switchOperand,calculator.firstOperand,calculator.operator, calculator.secondOperand);
 }))
 
 
@@ -213,7 +209,6 @@ numbersButtons.forEach(button => button.addEventListener("click", (event) => {
 operatorsButtons.forEach(button => button.addEventListener("click", (event) => {
     calculator.newOperator(event.target.textContent)
     calculator.updateDisplay()
-    console.log(calculator.switchOperand,calculator.firstOperand,calculator.operator, calculator.secondOperand);
 } ))
 
 // special operations button
@@ -221,7 +216,6 @@ spacialOperatorsButtons.forEach(button => button.addEventListener("click", (even
     calculator.transform(event.target.textContent)
     calculator.updateDisplay()
     calculator.checkErrors()
-    console.log(calculator.switchOperand,calculator.firstOperand,calculator.operator, calculator.secondOperand);
 }))
 
 
@@ -230,7 +224,6 @@ equalButton.addEventListener("click", () => {
     calculator.calculatorResult()
     calculator.updateDisplay(calculator.result)
     calculator.checkErrors()
-    console.log(calculator.record);
     undoIndex = (calculator.record.length - 1)
     updateIndoRedo()
     
@@ -254,17 +247,45 @@ PInumberButton.addEventListener("click", () => {
 deleteButton.addEventListener("click", () =>{
     calculator.removeDigit()
     calculator.updateDisplay()
-    console.log(calculator.switchOperand,calculator.firstOperand,calculator.operator, calculator.secondOperand);
+})
+// undo / redo buttons 
+indoButton.addEventListener("click", () => {
+    indo()
+    updateIndoRedo()
+    console.log(undoIndex)
+    
 })
 
+redoButton.addEventListener("click", () => {
+    redo()
+    updateIndoRedo()
+    console.log(undoIndex)
+})
+//....................................
 
 
 
+
+
+
+// undo / redo functions:
+
+//creats a new <p> element from a calculetion record given by the calculator object
+function createNewRecord(text){
+    let recordElement = document.createElement("p")
+    recordElement.textContent =  text
+    previousCalcs.appendChild(recordElement)
+}
+
+
+//changes state variebles if undo / redo is pressed
 function restorePreviousOperations(){
     calculator.firstOperand = calculator.record.at(undoIndex)[0]
     calculator.operator = calculator.record.at(undoIndex)[1]
     calculator.secondOperand = calculator.record.at(undoIndex)[2]
 }
+
+//undo
 function indo(){
     
         if(!alreadyIndo){
@@ -283,15 +304,10 @@ function indo(){
                     calculator.switchOperand = true
                     undoIndex -= 1
 
-                }
-        
-                
+                }    
     }
-    console.log(alreadyIndo)
-  
-    
 }
-
+//redo
 function redo(){
     undoIndex + 1 in calculator.record ? undoIndex += 1 : undoIndex = undoIndex
     if(undoIndex in calculator.record){
@@ -300,15 +316,14 @@ function redo(){
         calculator.updateDisplay()
         calculator.switchOperand = true
     }
-    
-    console.log(alreadyIndo)
 }
 
+//updates the undo / redo 's UI (activate the buttons if undo / redo available)
 function updateIndoRedo(){
-      if (!alreadyIndo && undoIndex in calculator.record){
+    if (!alreadyIndo && undoIndex in calculator.record){
         indoButton.classList.add("active")
-    }
-    else if ((alreadyIndo && undoIndex  in calculator.record)) {
+
+    }else if ((alreadyIndo && undoIndex  in calculator.record)) {
         indoButton.classList.add("active")
     }else{
         indoButton.classList.remove("active")
@@ -320,21 +335,10 @@ function updateIndoRedo(){
         redoButton.classList.remove("active")
     }
 }
+//...........................
 
 
 
-indoButton.addEventListener("click", () => {
-    indo()
-    updateIndoRedo()
-    console.log(undoIndex)
-    
-})
-
-redoButton.addEventListener("click", () => {
-    redo()
-    updateIndoRedo()
-    console.log(undoIndex)
-})
 
 
 
